@@ -1,6 +1,7 @@
 import {
 	Categories,
 	Container,
+	Filters,
 	SortPopup,
 	Title,
 	TopBar,
@@ -13,6 +14,22 @@ export default function Home() {
 				<Title text="Все пиццы" size="lg" className="font-extrabold" />
 			</Container>
 			<TopBar />
+			<Container className='pb-14'>
+				<div className='flex gap-12'>
+
+					{/* Filters */}
+					<div className='w-[245px]'>
+						<Filters />
+					</div>
+
+					{/* Pizzas */}
+					<div className='flex-1'>
+						<div className='flex flex-col gap-[50px]'>
+							List of Pizzas
+						</div>
+					</div>
+				</div>
+			</Container>
 		</>
 	);
 }

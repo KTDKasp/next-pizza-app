@@ -11,7 +11,7 @@ interface TopBarProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLD
 export const TopBar: React.FC<TopBarProps> = ({ className, ...props }) => {
 
   return (
-    <div className={cn('sticky top-0 bg-white py-5 shadow-lg shadow-black/5 z-10', className)} {...props}>
+    <div className={cn('sticky top-0 bg-white py-5 shadow-lg shadow-black/5 z-10 mb-9', className)} {...props}>
 			<Container className='flex items-center justify-between'>
 			<Categories />
 			<SortPopup />
