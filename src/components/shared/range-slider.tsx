@@ -26,7 +26,6 @@ const RangeSlider = React.forwardRef(
     React.useEffect(() => {
       // Update localValues when the external value prop changes
       setLocalValues(Array.isArray(value) ? value : [min, max]);
-			console.log('render');
 			
     }, [min, max, value]);
 
@@ -55,7 +54,7 @@ const RangeSlider = React.forwardRef(
             <div
               className="absolute text-center"
               style={{
-                left: `calc(${((value - min) / (max - min)) * 100}% + 0px)`,
+                left: `calc(${((value - min) / (max - min + 500)) * 100}% + 0px)`,
                 top: `10px`,
               }}>
               <span className="text-sm">{formatLabel ? formatLabel(value) : value}</span>
