@@ -4,6 +4,8 @@ import { Container } from './container';
 import Image from 'next/image';
 import { Button } from '../ui';
 import { ArrowRight, ShoppingCart, User } from 'lucide-react';
+import Link from 'next/link';
+import { SearchInput } from './search-input';
 
 interface HeaderProps
 	extends React.DetailedHTMLProps<
@@ -16,6 +18,7 @@ export const Header: React.FC<HeaderProps> = ({ className, ...props }) => {
 		<header className={cn('border border-b', className)} {...props}>
 			<Container className="flex items-center justify-between py-[43px]">
 				{/* Left side */}
+				<Link href={'/'}>
 				<div className="flex items-center gap-4">
 					<Image
 						src="/pizza-logo.png"
@@ -29,6 +32,12 @@ export const Header: React.FC<HeaderProps> = ({ className, ...props }) => {
 							вкусней уже некуда
 						</p>
 					</div>
+				</div>
+				</Link>
+
+				{/* Search */}
+				<div className='mx-10 flex-1'>
+					<SearchInput />
 				</div>
 
 				{/* Right side */}
