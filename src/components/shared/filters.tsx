@@ -1,14 +1,21 @@
+'use client';
+
 import { cn } from '@/lib/utils'
-import React, { DetailedHTMLProps, HTMLAttributes } from 'react'
+import React from 'react'
 import { Title } from './title'
 import { FilterCheckbox } from './filter-checkbox'
 import { Input } from '../ui'
 import { RangeSlider } from './range-slider'
 import { CheckboxFiltersGroup } from './checkbox-filters-group'
+import { useFilterIngredients } from '@/hooks/useFilterIngredients'
 
-interface FiltersProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
+interface FiltersProps extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
 export const Filters: React.FC<FiltersProps> = ({ className, ...props }) => {
+	const { ingredients, loading } = useFilterIngredients();
+
+	const ingredientItems = ingredients.map(ingredient => ({ value: String(ingredient.id), text: ingredient.name }));
+
 	return (
 		<div className={cn('', className)} {...props}>
 
@@ -32,82 +39,9 @@ export const Filters: React.FC<FiltersProps> = ({ className, ...props }) => {
 				title='Ингредиенты'
 				className='mt-5'
 				limit={6}
-				defaultItems={[
-					{
-						text: 'Сырный соус',
-						value: '1',
-					},
-					{
-						text: 'Моцарелла',
-						value: '2',
-					},
-					{
-						text: 'Чеснок',
-						value: '3',
-					},
-					{
-						text: 'Соленные огурчики',
-						value: '4',
-					},
-					{
-						text: 'Красный лук',
-						value: '5',
-					},
-					{
-						text: 'Томаты',
-						value: '6',
-					}
-				]}
-				items={[
-					{
-						text: 'Сырный соус',
-						value: '1',
-					},
-					{
-						text: 'Моцарелла',
-						value: '2',
-					},
-					{
-						text: 'Чеснок',
-						value: '3',
-					},
-					{
-						text: 'Соленные огурчики',
-						value: '4',
-					},
-					{
-						text: 'Красный лук',
-						value: '5',
-					},
-					{
-						text: 'Томаты',
-						value: '6',
-					},
-					{
-						text: 'Сырный соус',
-						value: '1',
-					},
-					{
-						text: 'Моцарелла',
-						value: '2',
-					},
-					{
-						text: 'Чеснок',
-						value: '3',
-					},
-					{
-						text: 'Соленные огурчики',
-						value: '4',
-					},
-					{
-						text: 'Красный лук',
-						value: '5',
-					},
-					{
-						text: 'Томаты',
-						value: '6',
-					}
-				]}
+				defaultItems={ingredientItems.slice(0, 6)}
+				items={ingredientItems}
+				loading={loading}
 			/>
 		</div>
 	)

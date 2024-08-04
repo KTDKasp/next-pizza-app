@@ -36,7 +36,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 	React.useEffect(() => {
 		Api.products.search(debouncedSearchQuery).then((items) => {
 			setProducts(items);
-		});
+		}).catch((e) => console.error(e));
 	}, [debouncedSearchQuery]);
 
 	return (
