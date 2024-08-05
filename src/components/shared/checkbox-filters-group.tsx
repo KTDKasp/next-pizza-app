@@ -10,13 +10,12 @@ type Item = FilterCheckboxProps;
 interface Props {
 	title: string;
 	items: Item[];
-	defaultItems: Item[];
+	defaultItems?: Item[];
 	limit?: number;
 	loading?: boolean;
 	searchInputPlaceholder?: string;
 	onClickCheckbox?: (id: string) => void;
-	defaultValue?: string[];
-	selected?: Set<string>;
+	selectedValues?: Set<string>;
 	className?: string;
 	name?: string;
 }
@@ -30,7 +29,7 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
 	className,
 	loading,
 	onClickCheckbox,
-	selected,
+	selectedValues,
 	name,
 }) => {
 	const [showAll, setShowAll] = React.useState<boolean>(false);
@@ -57,7 +56,7 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
 	}
   
   const ingridientList = showAll ? items
-		.filter(item => item.text.toLowerCase().includes(searchValue.toLowerCase())) : defaultItems.slice(0, limit);
+		.filter(item => item.text.toLowerCase().includes(searchValue.toLowerCase())) : (defaultItems || items).slice(0, limit);
 
 	return (
 		<div className={className}>
@@ -77,13 +76,13 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
 			<div className="flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar">
 				{ingridientList.map((item, index) => (
 					<FilterCheckbox
-						onCheckedChange={(ids) => console.log(ids)}
 						text={item.text}
 						value={item.value}
-						checked={false}
+						checked={selectedValues?.has(item.value)}
+						onCheckedChange={() => onClickCheckbox?.(item.value)}
 						endAdornment={item.endAdornment}
 						key={String(item.value)}
-						name={item.name}
+						name={name}
 					/>
 				))}
 

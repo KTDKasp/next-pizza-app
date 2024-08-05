@@ -1,23 +1,20 @@
-import React from "react"
-import { Ingredient } from "@prisma/client"
-import { useSet } from '@siberiacancode/reactuse';
-import { Api } from "@/services/api-client"
+import { Api } from "@/services/api-client";
+import { Ingredient } from "@prisma/client";
+import React from "react";
 
 type IngredientItem = Pick<Ingredient, 'id' | 'name'>;
 
 type ReturnProps = {
 	ingredients: IngredientItem[];
 	loading: boolean;
-	selectedIds: Set<string>;
+	selectedIngredients: Set<string>;
 	onAddId: (id: string) => void;
 }
 
-export const useFilterIngredients = (): ReturnProps => {
-
+export const useIngredients = () => {
 	const [ingredients, setIngredients] = React.useState<ReturnProps['ingredients']>([])
 	const [loading, setLoading] = React.useState<boolean>(true)
-	const {value: selectedIds, toggle} = useSet<string>([]);
-
+	
 	React.useEffect(() => {
 		setLoading(true);
 		Api.ingredients.getAllIngredients().then((data) => {
@@ -26,12 +23,10 @@ export const useFilterIngredients = (): ReturnProps => {
 				name: item.name
 			})));
 		}).catch((e) => console.error(e)).finally(() => setLoading(false))
-	}, [])
+	}, []);
 
 	return {
 		ingredients,
 		loading,
-		onAddId: toggle,
-		selectedIds
 	};
 }
