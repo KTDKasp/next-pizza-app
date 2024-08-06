@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { useCategoryStore } from '@/store/category';
+import { Category } from '@prisma/client';
 import Link from 'next/link';
 import React from 'react';
 
@@ -9,20 +10,13 @@ interface CategoriesProps
 	extends React.DetailedHTMLProps<
 		React.HTMLAttributes<HTMLDivElement>,
 		HTMLDivElement
-	> {}
+	> {
+	items: Category[];
+}
 
-const categories = [
-	{ id: 1, name: 'Пиццы' },
-	{ id: 2, name: 'Комбо' },
-	{ id: 3, name: 'Закуски' },
-	{ id: 4, name: 'Напитки' },
-	{ id: 5, name: 'Десерты' },
-	{ id: 6, name: 'Кофе' },
-	{ id: 7, name: 'Коктейли' },
-];
 
 export const Categories: React.FC<CategoriesProps> = ({
-	className,
+	className, items,
 	...props
 }) => {
 	const categoryActiveId = useCategoryStore(state => state.activeId);
@@ -32,7 +26,7 @@ export const Categories: React.FC<CategoriesProps> = ({
 			className={cn('inline-flex gap-1 bg-gray-50 p-1 rounded-2xl', className)}
 			{...props}
 		>
-			{categories.map(({name, id}, index) => (
+			{items.map(({name, id}, index) => (
 				<Link
 					href={`#${name}`}
 					key={index}

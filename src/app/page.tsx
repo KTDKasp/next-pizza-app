@@ -5,14 +5,28 @@ import {
 	Title,
 	TopBar,
 } from '@/components/shared';
+import { prisma } from '@/prisma/prisma-client';
 
-export default function Home() {
+export default async function Home() {
+	const categories = await prisma.category.findMany({
+		include: {
+			products: {
+				include: {
+					ingredients: true,
+					variants: true,
+				}
+			}
+		}
+	})
+
 	return (
 		<>
-			<Container className="">
+			<Container>
 				<Title text="Все пиццы" size="lg" className="font-extrabold" />
 			</Container>
-			<TopBar />
+
+			<TopBar categories={categories.filter(category => category.products.length > 0)}/>
+
 			<Container className="pb-14">
 				<div className="flex gap-12">
 					{/* Filters */}
@@ -23,103 +37,18 @@ export default function Home() {
 					{/* Pizzas */}
 					<div className="flex-1">
 						<div className="flex flex-col gap-[50px]">
-							<ProductsCardList
-								title={'Пиццы'}
-								productItems={[
-									{
-										id: 1,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 2,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 3,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 4,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 5,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 6,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-								]}
-								categoryId={1}
-							/>
-
-							<ProductsCardList
-								title={'Комбо'}
-								productItems={[
-									{
-										id: 1,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 2,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 3,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 4,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 5,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-									{
-										id: 6,
-										name: 'Чизбургер-пицца',
-										imageUrl:
-											'https://media.dodostatic.net/image/r:292x292/11EE7D614CBE0530B7234B6D7A6E5F8E.avif',
-										price: 550,
-									},
-								]}
-								categoryId={2}
-							/>
+							{
+								categories.map((category) => (
+									category.products.length > 0 && (
+										<ProductsCardList 
+											key={category.id}
+											categoryId={category.id}
+											title={category.name}
+											productItems={category.products}
+										/>
+									)
+								))
+							}
 						</div>
 					</div>
 				</div>
