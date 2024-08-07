@@ -1,7 +1,6 @@
 import { Container, ProductImage, Title } from "@/components/shared";
 import { GroupVariants } from "@/components/shared/group-variants";
 import { prisma } from "@/prisma/prisma-client"
-import { Text } from "lucide-react";
 import { notFound } from "next/navigation"
 
 export default async function ProductPage( {params: { id }} : {params: {id: string}}) {

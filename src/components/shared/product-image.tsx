@@ -3,7 +3,7 @@ import React from 'react';
 
 interface ProductImageProps extends React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   imageUrl: string;
-	size: number;
+	size: 20 | 30 | 40;
 }
 
 export const ProductImage: React.FC<ProductImageProps> = ({ className, imageUrl, size, ...props }) => {
