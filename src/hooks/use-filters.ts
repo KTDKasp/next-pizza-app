@@ -1,6 +1,5 @@
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useSet } from "@siberiacancode/reactuse";
 
 type PriceRangeProps = {

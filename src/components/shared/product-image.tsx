@@ -12,7 +12,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({ className, imageUrl,
       <img
         src={imageUrl}
         alt="Logo"
-        className={cn('relative left-[14px] top-2 transition-all z-10 duration-300', {
+        className={cn('relative left-[12px] top-2 transition-all z-10 duration-300', {
           'w-[300px] h-[300px]': size === 20,
           'w-[400px] h-[400px]': size === 30,
           'w-[500px] h-[500px]': size === 40,
