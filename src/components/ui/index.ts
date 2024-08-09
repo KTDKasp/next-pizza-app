@@ -7,4 +7,5 @@ export { Checkbox } from './checkbox'
 export { Slider } from './slider';
 export { Select } from './select';
 export { Popover } from './popover';
+export { Sheet } from './sheet'
 
