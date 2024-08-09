@@ -12,8 +12,11 @@ import {
 import Link from 'next/link';
 import { Button } from '../ui';
 import { ArrowRight } from 'lucide-react';
+import { CartDrawerItem } from './cart-drawer-item';
 
 type CartDrawerProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & {};
+
+// #TODO: Добавить cart-drawer-item без вшитых вручную данных
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({children, className, ...props}) => {
 	return (
@@ -27,7 +30,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({children, className, ...p
 					</SheetTitle>
 				</SheetHeader>
 
-				{/* Items */}
+				<div className='-mx-6 mt-5 overflow-auto flex-1'>
+					<div className='mb-2'>
+						{/* #TODO <CartDrawerItem /> */}
+					</div>
+				</div>
 
 				<SheetFooter className='-mx-6 bg-white p-8'>
 					<div className='w-full'>
