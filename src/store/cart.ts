@@ -1,23 +1,14 @@
+import { getCartDetails } from "@/lib";
+import { CartStateItem } from "@/lib/get-cart-details";
 import { Api } from "@/services/api-client";
 import { create, StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
-
-export type ICartItem = {
-	id: number;
-	quantity: number;
-	name: string;
-	imageUrl: string;
-	price: number;
-	pizzaSize?: number | null;
-	type?: number | null;
-	ingredients: Array<{name: string, price: number}>;
-}
 
 interface CartState {
 	loading: boolean;
 	error: boolean;
 	totalAmount: number;
-	items: ICartItem[];
+	items: CartStateItem[];
 }
 
 interface CartAction {
@@ -44,8 +35,8 @@ const cartSlice: StateCreator<CartState & CartAction, [['zustand/devtools', neve
 	fetchCartItems: async () => {
 		try {
 			set({loading: true, error: false});
-			const data = await Api.cart.fetchCart();
-			set(getCartDetails(data))
+			const data = await Api.cart.getCart();
+			set(getCartDetails(data), false, 'cart/fetchCartItems');
 		} catch (error) {
 			console.error(error);
 			set({error: true})
@@ -54,11 +45,33 @@ const cartSlice: StateCreator<CartState & CartAction, [['zustand/devtools', neve
 		}
 	},
 
-	updateItemQuantity: async (id: number, quantity: number) => {},
+	updateItemQuantity: async (id: number, quantity: number) => {
+		try {
+			set({loading: true, error: false});
+			const data = await Api.cart.updateItemQuantity(id, quantity);
+			set(getCartDetails(data), false, 'cart/updateItemQuantity');
+		} catch (error) {
+			console.error(error);
+			set({error: true})
+		} finally {
+			set({loading: false})
+		}
+	},
 
 	addCartItem: async (values: any) => {},
 
-	removeCartItem: async (id: number) => {},
+	removeCartItem: async (id: number) => {
+		try {
+			set({loading: true, error: false});
+			const data = await Api.cart.removeCartItem(id);
+			set(getCartDetails(data), false, 'cart/removeCartItem');
+		} catch (error) {
+			console.error(error);
+			set({error: true})
+		} finally {
+			set({loading: false})
+		}
+	},
 })
 
 export const useCartStore = create<CartState & CartAction>()(devtools(cartSlice))

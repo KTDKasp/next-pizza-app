@@ -3,15 +3,15 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
 	try {
-		const tokenId = req.cookies.get('cartToken')?.value;
+		const token = req.cookies.get('cartToken')?.value;
 
-		if (!tokenId) {
+		if (!token) {
 			return NextResponse.json({ totalAmount: 0, items: [] });
 		}
 
 		const userCart = await prisma.cart.findFirst({
 			where: {
-				tokenId
+				tokenId: token
 			},
 			include: {
 				items: {
