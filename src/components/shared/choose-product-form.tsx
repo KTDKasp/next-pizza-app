@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from '@/lib/utils';
 import React from 'react';
 import { Title } from './title';
@@ -9,18 +11,21 @@ type ChooseProductFormProps = React.DetailedHTMLProps<
 > & {
 	name: string;
 	imageUrl: string;
+	price: number;
 	onClickAdd?: VoidFunction;
 };
 
+/**
+ * 	Форма выбора продукта
+ */
 export const ChooseProductForm: React.FC<ChooseProductFormProps> = ({
 	name,
 	imageUrl,
+	price,
 	onClickAdd,
 	className,
 	...props
 }) => {
-	const textDetails = '30 см, традиционное тесто 30'
-	const totalPrice = 350;
 
 	return <div className={cn(className, 'flex flex-1')} {...props}>
 		<div className='flex items-center justify-center flex-1 relative w-full'>
@@ -28,12 +33,10 @@ export const ChooseProductForm: React.FC<ChooseProductFormProps> = ({
 		</div>
 
 		<div className='w-[490px] bg-[#f7f6f5] p-7'>
-			<Title text={name} size='md' className='font-extrabold mb-1'/>
+			<Title text={name} size='md' className='font-extrabold mb-5'/>
 
-			<p className='text-gray-400 mb-5'>{textDetails}</p>
-
-			<Button className='h-[55px] px-10 text-base rounded-[18px] w-full'>
-				Добавить в корзину за {totalPrice} ₽
+			<Button onClick={onClickAdd} className='h-[55px] px-10 text-base rounded-[18px] w-full'>
+				Добавить в корзину за {price} ₽
 			</Button>
 		</div>
 	</div>;

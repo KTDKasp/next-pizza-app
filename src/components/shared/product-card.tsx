@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Title } from './title';
@@ -12,8 +11,6 @@ interface ProductCardProps {
 	imageUrl: string;
 	className?: string;
 }
-
-// #TODO: Продолжить с этого компонента 1:53:00
 
 export const ProductCard: React.FC<ProductCardProps> = ({id, name, price, imageUrl, className}) => {
 	return (

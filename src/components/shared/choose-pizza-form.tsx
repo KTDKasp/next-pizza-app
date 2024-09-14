@@ -22,7 +22,7 @@ type ChoosePizzaFormProps = React.DetailedHTMLProps<
 	imageUrl: string;
 	ingredients: Ingredient[];
 	variants: ProductVariant[];
-	onClickAddCart?: VoidFunction;
+	onClickAddToCart: (variantId: number, ingredients: number[]) => void;
 };
 
 export const ChoosePizzaForm: React.FC<ChoosePizzaFormProps> = ({
@@ -30,25 +30,33 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaFormProps> = ({
 	imageUrl,
 	ingredients,
 	variants,
-	onClickAddCart,
+	onClickAddToCart,
 	className,
 	...props
 }) => {
-
 	const {
 		size,
 		type,
 		availableSizes: availablePizzaSizes,
 		selectedIngredients,
+		currentVariantId,
 		setSize,
 		setType,
 		addIngredient,
 	} = usePizzaOptions(variants);
 
-	const {textDetails, totalPrice} = getPizzaDetails(size, type, variants, ingredients, selectedIngredients);
+	const { textDetails, totalPrice } = getPizzaDetails(
+		size,
+		type,
+		variants,
+		ingredients,
+		selectedIngredients
+	);
 
 	const handleClickAdd = () => {
-		onClickAddCart?.();
+		if (currentVariantId) {
+			onClickAddToCart(currentVariantId, Array.from(selectedIngredients));
+		}
 	};
 
 	return (

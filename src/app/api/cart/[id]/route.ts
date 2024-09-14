@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id } = params;
+    const id = Number(params.id);
     const data = (await req.json()) as { quantity: number };
     const token = req.cookies.get('cartToken')?.value;
 
@@ -14,7 +14,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
-        id: Number(id)
+        id
       }
     })
 
@@ -24,7 +24,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     await prisma.cartItem.update({
       where: {
-        id: Number(id)
+        id
       },
       data: {
         quantity: data.quantity
@@ -42,7 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { id } = params;
+    const id = Number(params.id);
     const token = req.cookies.get('cartToken')?.value;
 
     if (!token) {
@@ -51,7 +51,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     const cartItem = await prisma.cartItem.findFirst({
       where: {
-        id: Number(id)
+        id
       }
     })
 
@@ -61,7 +61,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     await prisma.cartItem.delete({
       where: {
-        id: Number(id)
+        id
       }
     })
 
