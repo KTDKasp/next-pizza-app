@@ -12,7 +12,7 @@ type ChooseProductFormProps = React.DetailedHTMLProps<
 	name: string;
 	imageUrl: string;
 	price: number;
-	onClickAdd?: VoidFunction;
+	onClickAddToCart?: VoidFunction;
 };
 
 /**
@@ -22,7 +22,7 @@ export const ChooseProductForm: React.FC<ChooseProductFormProps> = ({
 	name,
 	imageUrl,
 	price,
-	onClickAdd,
+	onClickAddToCart,
 	className,
 	...props
 }) => {
@@ -35,7 +35,7 @@ export const ChooseProductForm: React.FC<ChooseProductFormProps> = ({
 		<div className='w-[490px] bg-[#f7f6f5] p-7'>
 			<Title text={name} size='md' className='font-extrabold mb-5'/>
 
-			<Button onClick={onClickAdd} className='h-[55px] px-10 text-base rounded-[18px] w-full'>
+			<Button onClick={onClickAddToCart} className='h-[55px] px-10 text-base rounded-[18px] w-full'>
 				Добавить в корзину за {price} ₽
 			</Button>
 		</div>
