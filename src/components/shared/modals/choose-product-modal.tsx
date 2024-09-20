@@ -25,26 +25,23 @@ export const ChooseProductModal: React.FC<ChooseProductModalProps> = ({
 	const router = useRouter();
 	const fisrtVariant = product.variants[0];
 	const isPizzaForm = Boolean(fisrtVariant.productType);
-	const addCartItem = useCartStore((state) => state.addCartItem);
+	const [loading, addCartItem] = useCartStore((state) => [state.loading, state.addCartItem]);
 
-	const onAddProduct = () => {
-		addCartItem({
-			productVariantId: fisrtVariant.id,
-		});
-	};
-
-	const onAddPizza = async (productVariantId: number, ingredients: number[]) => {
+	const onSubmitAdd = async (productVariantId?: number, ingredients?: number[]) => {
 		try {
+			const variantId = productVariantId ?? fisrtVariant.id;
+
 			await addCartItem({
-				productVariantId,
+				productVariantId: variantId,
 				ingredients,
 			});
 			toast.success('Пицца добавлена в корзину');
+			router.back();
 		} catch (error) {
 			toast.error('Произошла ошибка при добавлении в корзину');
 			console.error(error);
 		}
-	};
+	}
 
 	return (
 		<Dialog
@@ -65,14 +62,16 @@ export const ChooseProductModal: React.FC<ChooseProductModalProps> = ({
 						imageUrl={product.imageUrl}
 						ingredients={product.ingredients}
 						variants={product.variants}
-						onClickAddToCart={onAddPizza}
+						onClickAddToCart={onSubmitAdd}
+						loading={loading}
 					/>
 				) : (
 					<ChooseProductForm
 						name={product.name}
 						imageUrl={product.imageUrl}
-						onClickAddToCart={onAddProduct}
+						onClickAddToCart={onSubmitAdd}
 						price={fisrtVariant.price}
+						loading={loading}
 					/>
 				)}
 			</DialogContent>

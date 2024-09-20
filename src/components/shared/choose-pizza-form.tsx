@@ -22,6 +22,7 @@ type ChoosePizzaFormProps = React.DetailedHTMLProps<
 	imageUrl: string;
 	ingredients: Ingredient[];
 	variants: ProductVariant[];
+	loading?: boolean;
 	onClickAddToCart: (variantId: number, ingredients: number[]) => void;
 };
 
@@ -30,6 +31,7 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaFormProps> = ({
 	imageUrl,
 	ingredients,
 	variants,
+	loading,
 	onClickAddToCart,
 	className,
 	...props
@@ -106,6 +108,7 @@ export const ChoosePizzaForm: React.FC<ChoosePizzaFormProps> = ({
 				</div>
 
 				<Button
+					loading={loading}
 					onClick={handleClickAdd}
 					className="h-[55px] px-10 text-base rounded-[18px] w-full"
 				>
