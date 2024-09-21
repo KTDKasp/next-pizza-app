@@ -6,10 +6,11 @@ import { cn } from '@/lib/utils';
 import { useIntersectionObserver } from '@siberiacancode/reactuse';
 import { ProductCard } from './product-card';
 import { useCategoryStore } from '@/store/category';
+import { ProductWithRelations } from '@/@types/updated-prisma-product';
 
 interface ProductsCardListProps {
 	title: string;
-	productItems: any[];
+	productItems: ProductWithRelations[];
 	categoryId: number;
 	className?: string;
 	listClassName?: string;
@@ -47,6 +48,7 @@ export const ProductsCardList: React.FC<ProductsCardListProps> = ({
 						name={product.name}
 						imageUrl={product.imageUrl}
 						price={product.variants[0].price}
+						ingredients={product.ingredients}
 					/>
 				))}
 			</div>
