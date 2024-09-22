@@ -90,6 +90,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 										  )
 										: ''
 								}
+								disabled={item.disabled}
 								onClickCountButton={(type) =>
 									onClickCountButton(item.id, item.quantity, type)
 								}
