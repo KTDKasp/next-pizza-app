@@ -12,34 +12,44 @@ interface HeaderProps
 	extends React.DetailedHTMLProps<
 		React.HTMLAttributes<HTMLDivElement>,
 		HTMLDivElement
-	> {}
+	> {
+	hasSearch?: boolean;
+	hasCart?: boolean;
+}
 
-export const Header: React.FC<HeaderProps> = ({ className, ...props }) => {
+export const Header: React.FC<HeaderProps> = ({
+	hasSearch = true,
+	hasCart = true,
+	className,
+	...props
+}) => {
 	return (
-		<header className={cn('border border-b', className)} {...props}>
+		<header className={cn('border-b', className)} {...props}>
 			<Container className="flex items-center justify-between py-[43px]">
 				{/* Left side */}
 				<Link href={'/'}>
-				<div className="flex items-center gap-4">
-					<Image
-						src="/pizza-logo.png"
-						alt="Pizza logo"
-						width={35}
-						height={35}
-					/>
-					<div>
-						<h1 className="text-2xl uppercase font-black">Next Pizza</h1>
-						<p className="text-sm text-gray-400 leading-3">
-							вкусней уже некуда
-						</p>
+					<div className="flex items-center gap-4">
+						<Image
+							src="/pizza-logo.png"
+							alt="Pizza logo"
+							width={35}
+							height={35}
+						/>
+						<div>
+							<h1 className="text-2xl uppercase font-black">Next Pizza</h1>
+							<p className="text-sm text-gray-400 leading-3">
+								вкусней уже некуда
+							</p>
+						</div>
 					</div>
-				</div>
 				</Link>
 
 				{/* Search */}
-				<div className='mx-10 flex-1'>
-					<SearchInput />
-				</div>
+				{hasSearch && (
+					<div className="mx-10 flex-1">
+						<SearchInput />
+					</div>
+				)}
 
 				{/* Right side */}
 				<div className="flex items-center gap-4">
@@ -47,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ className, ...props }) => {
 						<User size={14} />
 						Войти
 					</Button>
-					<CartButton />
+					{ hasCart && <CartButton />}
 				</div>
 			</Container>
 		</header>

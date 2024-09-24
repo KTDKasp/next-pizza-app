@@ -8,4 +8,5 @@ export { Slider } from './slider';
 export { Select } from './select';
 export { Popover } from './popover';
 export { Sheet } from './sheet'
+export { Textarea } from './textarea'
 
