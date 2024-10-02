@@ -1,12 +1,13 @@
 import React from 'react'
 import { RequiredSymbol } from '../required-symbol';
 import { Input } from '@/components/ui';
+import { ErrorText } from '../error-text';
+import { ClearButton } from '../clear-button';
 
-type FormInputProps = {
+type FormInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 	name: string;
 	label?: string;
 	required?: boolean;
-	className?: string;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({ name, label, required, className, ...props }) => {
@@ -22,7 +23,10 @@ export const FormInput: React.FC<FormInputProps> = ({ name, label, required, cla
 
 			<div className="relative">
 				<Input className='h-12 text-base' {...props}/>
+				<ClearButton />
 			</div>
+
+			<ErrorText text='Поле обязательно для заполнения' className='mt-2' />
 		</div>
 	)
 }
