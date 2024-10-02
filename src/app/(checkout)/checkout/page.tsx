@@ -1,8 +1,21 @@
-import { CheckoutTotalDetails, Container, Title, WhiteBlock } from '@/components/shared';
+'use client';
+
+import {
+	CheckoutItem,
+	CheckoutSidebar,
+	Container,
+	Title,
+	WhiteBlock,
+} from '@/components/shared';
 import { Input, Textarea } from '@/components/ui';
-import { Package, Percent, Truck } from 'lucide-react';
+import { PizzaSize, PizzaType } from '@/constants/pizza';
+import { useCart } from '@/hooks';
+import { getCartItemDetails } from '@/lib';
+import { updateQuantityOnClick } from '@/lib/update-quantity-onclick';
 
 export default function CheckoutPage() {
+	const { totalAmount, items, updateItemQuantity, removeCartItem } = useCart();
+
 	return (
 		<Container className="mt-10">
 			<Title
@@ -12,7 +25,33 @@ export default function CheckoutPage() {
 			<div className="flex gap-10">
 				{/* Left panel */}
 				<div className="flex flex-col gap-10 flex-1 mb-20">
-					<WhiteBlock title="1. Корзина">123123123</WhiteBlock>
+					<WhiteBlock title="1. Корзина">
+						<div className="flex flex-col gap-5">
+							{items.map((item) => (
+								<CheckoutItem
+									key={item.id}
+									id={item.id}
+									name={item.name}
+									price={item.price}
+									imageUrl={item.imageUrl}
+									quantity={item.quantity}
+									details={getCartItemDetails(
+										item.ingredients,
+										item.pizzaType as PizzaType,
+										item.pizzaSize as PizzaSize
+									)}
+									disabled={item.disabled}
+									onClickRemoveButton={() => removeCartItem(item.id)}
+									onClickCountButton={(type) =>
+										updateItemQuantity(
+											item.id,
+											updateQuantityOnClick(item.quantity, type)
+										)
+									}
+								/>
+							))}
+						</div>
+					</WhiteBlock>
 
 					<WhiteBlock title="2. Персональные данные">
 						<div className="grid grid-cols-2 gap-5">
@@ -29,39 +68,23 @@ export default function CheckoutPage() {
 
 					<WhiteBlock title="3. Адрес доставки">
 						<div className="flex flex-col gap-5">
-							<Input name="address" className="text-base" placeholder="Введите адрес..." />
-							<Textarea className='text-base' placeholder='Комментарии к заказу...' rows={5}/>
+							<Input
+								name="address"
+								className="text-base"
+								placeholder="Введите адрес..."
+							/>
+							<Textarea
+								className="text-base"
+								placeholder="Комментарии к заказу..."
+								rows={5}
+							/>
 						</div>
 					</WhiteBlock>
 				</div>
 
 				{/* Right panel */}
-				<div className='w-[450px]'>
-					<WhiteBlock className='p-6 sticky top-4'>
-						<div className='flex flex-col gap-1'>
-							<span className='text-xl'>Итого:</span>
-							<span className='text-[34px] font-extrabold'>3506 ₽</span>
-						</div>
-
-						<CheckoutTotalDetails title={
-							<div className='flex items-center'>
-								<Package size={18} className='mr-2 text-gray-400' />
-								Стоимость товаров:
-							</div>
-						} value="3500 ₽"/>
-						<CheckoutTotalDetails title={
-							<div className='flex items-center'>
-								<Percent size={18} className='mr-2 text-gray-400' />
-								Налоги:
-							</div>
-						} value="3500 ₽"/>
-						<CheckoutTotalDetails title={
-							<div className='flex items-center'>
-								<Truck size={18} className='mr-2 text-gray-400' />
-								Доставка:
-							</div>
-						} value="3500 ₽"/>
-					</WhiteBlock>
+				<div className="w-[450px]">
+					<CheckoutSidebar totalAmount={totalAmount} />
 				</div>
 			</div>
 		</Container>

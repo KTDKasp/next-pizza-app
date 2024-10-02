@@ -1,6 +1,10 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
+import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 import {
 	Sheet,
@@ -12,16 +16,13 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet';
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
-import Link from 'next/link';
 import { Button } from '../ui';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { CartDrawerItem } from './cart-drawer-item';
-import { useCartStore } from '@/store/cart';
 import { getCartItemDetails } from '@/lib';
 import { PizzaSize, PizzaType } from '@/constants/pizza';
-import Image from 'next/image';
 import { Title } from './title';
+import { useCart } from '@/hooks';
+import { updateQuantityOnClick } from '@/lib/update-quantity-onclick';
 
 type CartDrawerProps = React.DetailedHTMLProps<
 	React.HTMLAttributes<HTMLDivElement>,
@@ -33,33 +34,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 	className,
 	...props
 }) => {
-	const [
-		totalAmount,
-		items,
-		fetchCartItems,
-		updateItemQuantity,
-		removeCartItem,
-	] = useCartStore((state) => [
-		state.totalAmount,
-		state.items,
-		state.fetchCartItems,
-		state.updateItemQuantity,
-		state.removeCartItem,
-	]);
-
-	React.useEffect(() => {
-		fetchCartItems();
-	}, [fetchCartItems]);
-
-	const onClickCountButton = (
-		id: number,
-		quantity: number,
-		type: 'plus' | 'minus'
-	) => {
-		const updatedQuantity = type === 'plus' ? quantity + 1 : quantity - 1;
-
-		updateItemQuantity(id, updatedQuantity);
-	};
+	const { totalAmount, items, updateItemQuantity, removeCartItem } = useCart();
+	const [redirect, setRedirect] = React.useState(false);
 
 	return (
 		<Sheet>
@@ -87,18 +63,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 										name={item.name}
 										price={item.price}
 										quantity={item.quantity}
-										details={
-											item.pizzaType && item.pizzaSize
-												? getCartItemDetails(
-														item.pizzaType as PizzaType,
-														item.pizzaSize as PizzaSize,
-														item.ingredients
-												  )
-												: ''
-										}
+										details={getCartItemDetails(
+											item.ingredients,
+											item.pizzaType as PizzaType,
+											item.pizzaSize as PizzaSize
+										)}
 										disabled={item.disabled}
 										onClickCountButton={(type) =>
-											onClickCountButton(item.id, item.quantity, type)
+											updateItemQuantity(item.id, updateQuantityOnClick(item.quantity, type))
 										}
 										onClickRemoveButton={() => removeCartItem(item.id)}
 									/>
@@ -116,8 +88,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 									<span className="text-lg font-bold">{totalAmount} ₽</span>
 								</div>
 
-								<Link href="/cart">
-									<Button type="submit" className="w-full h-12 text-base">
+								<Link href="/checkout">
+									<Button onClick={() => setRedirect(true)} loading={redirect} type="submit" className="w-full h-12 text-base">
 										Оформить заказ
 										<ArrowRight className="w-5 ml-2" />
 									</Button>
