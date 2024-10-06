@@ -1,27 +1,25 @@
 'use client';
 
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
-	CheckoutItem,
+	CheckoutCart,
+	CheckoutDeliveryAddress,
+	checkoutFormSchema,
+	CheckoutFormValues,
+	CheckoutPersonalData,
 	CheckoutSidebar,
 	Container,
-	FormInput,
 	Title,
-	WhiteBlock,
 } from '@/components/shared';
-import { Input, Textarea } from '@/components/ui';
-import { PizzaSize, PizzaType } from '@/constants/pizza';
 import { useCart } from '@/hooks';
-import { getCartItemDetails } from '@/lib';
-import { updateQuantityOnClick } from '@/lib/update-quantity-onclick';
-import { CheckoutCart, CheckoutDeliveryAddress, CheckoutPersonalData } from '@/components/shared/checkout';
 
 export default function CheckoutPage() {
 	const { totalAmount, items, updateItemQuantity, removeCartItem } = useCart();
 
-	const form = useForm({
+	const form = useForm<CheckoutFormValues>({
+		resolver: zodResolver(checkoutFormSchema),
 		defaultValues: {
 			email: '',
 			firstName: '',
@@ -29,8 +27,10 @@ export default function CheckoutPage() {
 			phone: '',
 			address: '',
 			comment: '',
-		}
+		},
 	});
+
+	const onSubmitForm: SubmitHandler<CheckoutFormValues> = (data) => {};
 
 	return (
 		<Container className="mt-10">
@@ -38,24 +38,29 @@ export default function CheckoutPage() {
 				text="Оформление заказа"
 				className="font-extrabold text-[36px] mb-8"
 			/>
-			<div className="flex gap-10">
-				{/* Left panel */}
-				<div className="flex flex-col gap-10 flex-1 mb-20">
-					<CheckoutCart items={items} removeCartItem={removeCartItem} updateItemQuantity={updateItemQuantity}/>
+			<FormProvider {...form}>
+				<form onSubmit={form.handleSubmit(onSubmitForm)}>
+					<div className="flex gap-10">
+						{/* Left panel */}
+						<div className="flex flex-col gap-10 flex-1 mb-20">
+							<CheckoutCart
+								items={items}
+								removeCartItem={removeCartItem}
+								updateItemQuantity={updateItemQuantity}
+							/>
 
-					<CheckoutPersonalData />
-					
-					<CheckoutDeliveryAddress />
+							<CheckoutPersonalData />
 
-				</div>
+							<CheckoutDeliveryAddress />
+						</div>
 
-
-
-				{/* Right panel */}
-				<div className="w-[450px]">
-					<CheckoutSidebar totalAmount={totalAmount} />
-				</div>
-			</div>
+						{/* Right panel */}
+						<div className="w-[450px]">
+							<CheckoutSidebar totalAmount={totalAmount} />
+						</div>
+					</div>
+				</form>
+			</FormProvider>
 		</Container>
 	);
 }
