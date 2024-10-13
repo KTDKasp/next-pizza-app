@@ -1,9 +1,11 @@
+'use client';
+
 import React from 'react'
+import { useFormContext } from 'react-hook-form';
 import { RequiredSymbol } from '../required-symbol';
 import { Input } from '@/components/ui';
 import { ErrorText } from '../error-text';
 import { ClearButton } from '../clear-button';
-import { useFormContext } from 'react-hook-form';
 
 type FormInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 	name: string;
