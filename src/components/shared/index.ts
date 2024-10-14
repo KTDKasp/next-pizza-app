@@ -29,5 +29,6 @@ export { CheckoutSidebar } from './checkout-sidebar';
 export { ErrorText } from './error-text';
 export { ClearButton } from './clear-button';
 export * from './modals';
+export * from './email-templates';
 export * from './form-components';
 export * from './checkout';

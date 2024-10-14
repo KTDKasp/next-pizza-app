@@ -1,6 +1,7 @@
 'use server';
 
-import { CheckoutFormValues } from '@/components/shared';
+import { CheckoutFormValues, PayOrderTemplate } from '@/components/shared';
+import { sendEmail } from '@/lib';
 import { prisma } from '@/prisma/prisma-client';
 import { OrderStatus } from '@prisma/client';
 import { cookies } from 'next/headers';
@@ -72,10 +73,17 @@ export async function createOrder(data: CheckoutFormValues) {
 
     // #TODO: Сделать создание ссылки оплаты
 
-    // this is dummy return data
-    return 'https://shazoo.ru';
+    await sendEmail(
+      data.email,
+      'Next Pizza / Оплатите заказ #' + order.id,
+      PayOrderTemplate({
+        orderId: order.id,
+        totalAmount: order.totalAmount,
+        paymentUrl: 'https://shazoo.ru',
+      }),
+    );
 
   } catch (error) {
-    
+    console.log('[CreateOrder] Server error', error);
   }
 }

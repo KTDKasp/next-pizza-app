@@ -20,7 +20,7 @@ export const CheckoutSidebar: React.FC<CheckoutSidebarProps> = ({
   ...props
 }) => {
   const vatPrice = (totalAmount * VAT) / 100;
-  const totalPrice = totalAmount + vatPrice + DELIVERY_PRICE;
+  const totalPrice = totalAmount === 0 ? 0 : totalAmount + vatPrice + DELIVERY_PRICE;
 
   return (
     <WhiteBlock className={cn('p-6 sticky top-4', className)}>
@@ -58,7 +58,7 @@ export const CheckoutSidebar: React.FC<CheckoutSidebarProps> = ({
             Доставка:
           </div>
         }
-        value={ loading ? <Skeleton className='h-6 w-16 rounded-[6px]' /> : `${DELIVERY_PRICE} ₽`}
+        value={ loading ? <Skeleton className='h-6 w-16 rounded-[6px]' /> : `${totalAmount === 0 ? 0 : DELIVERY_PRICE} ₽`}
       />
 
       <Button
