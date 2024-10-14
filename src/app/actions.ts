@@ -1,7 +1,7 @@
 'use server';
 
 import { CheckoutFormValues, PayOrderTemplate } from '@/components/shared';
-import { sendEmail } from '@/lib';
+import { createPayment, sendEmail } from '@/lib';
 import { prisma } from '@/prisma/prisma-client';
 import { OrderStatus } from '@prisma/client';
 import { cookies } from 'next/headers';
@@ -72,6 +72,26 @@ export async function createOrder(data: CheckoutFormValues) {
     })
 
     // #TODO: Сделать создание ссылки оплаты
+    const paymentData = await createPayment({
+      amount: order.totalAmount,
+      orderId: order.id,
+      description: 'Оплата заказа #' + order.id
+    })
+
+    if (!paymentData) {
+      throw new Error('Payment data not found');
+    }
+
+    await prisma.order.update({
+      where: {
+        id: order.id,
+      },
+      data: {
+        paymentId: paymentData.id,
+      }
+    })
+
+    const paymentUrl = paymentData.confirmation.confirmation_url;
 
     await sendEmail(
       data.email,
@@ -79,9 +99,11 @@ export async function createOrder(data: CheckoutFormValues) {
       PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: 'https://shazoo.ru',
+        paymentUrl,
       }),
     );
+
+    return paymentUrl;
 
   } catch (error) {
     console.log('[CreateOrder] Server error', error);
