@@ -5,21 +5,25 @@ import { Filters } from "./use-filters";
 
 export const useQueryFilters = (filters: Filters) => {
 	const router = useRouter();
+	const isMounted = React.useRef(false);
 
 	React.useEffect(() => {
-		const params = {
-			...filters.prices,
-			sizes: Array.from(filters.sizes),
-			pizzaTypes: Array.from(filters.pizzaTypes),
-			ingredients: Array.from(filters.selectedIngredients),
-		};
-
-		const queryString = qs.stringify(params, {
-			arrayFormat: 'comma',
-		});
-
-		router.push(`?${queryString}`, {
-			scroll: false,
-		});
+		if (isMounted.current) {
+			const params = {
+				...filters.prices,
+				sizes: Array.from(filters.sizes),
+				pizzaTypes: Array.from(filters.pizzaTypes),
+				ingredients: Array.from(filters.selectedIngredients),
+			};
+	
+			const queryString = qs.stringify(params, {
+				arrayFormat: 'comma',
+			});
+	
+			router.push(`?${queryString}`, {
+				scroll: false,
+			});
+		}
+		isMounted.current = true;
 	}, [filters]);
 }

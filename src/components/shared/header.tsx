@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Container } from './container';
@@ -7,6 +9,8 @@ import { User } from 'lucide-react';
 import Link from 'next/link';
 import { SearchInput } from './search-input';
 import { CartButton } from './cart-button';
+import { useSearchParams } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 interface HeaderProps
 	extends React.DetailedHTMLProps<
@@ -23,6 +27,17 @@ export const Header: React.FC<HeaderProps> = ({
 	className,
 	...props
 }) => {
+	const searchParams = useSearchParams();
+
+	// Заменить на нормальную страницу успешной оплаты заказа
+	React.useEffect(() => {
+		if (searchParams.has('paid')) {
+			setTimeout(() => {
+				toast.success('Заказ успешно оплачен! Информация отправлена на почту.')
+			}, 500)
+		}
+	}, []);
+
 	return (
 		<header className={cn('border-b', className)} {...props}>
 			<Container className="flex items-center justify-between py-[43px]">

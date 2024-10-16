@@ -1,4 +1,3 @@
-import { PayOrderTemplate } from '@/components/shared/email-templates/pay-order';
 import { Resend } from 'resend'
 
 
