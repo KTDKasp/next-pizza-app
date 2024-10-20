@@ -1,16 +1,18 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
+import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+
 import { cn } from '@/lib/utils';
 import { Container } from './container';
-import Image from 'next/image';
-import { Button } from '../ui';
-import { User } from 'lucide-react';
-import Link from 'next/link';
 import { SearchInput } from './search-input';
 import { CartButton } from './cart-button';
-import { useSearchParams } from 'next/navigation';
-import toast from 'react-hot-toast';
+import { ProfileButton } from './profile-button';
+
 
 interface HeaderProps
 	extends React.DetailedHTMLProps<
@@ -68,10 +70,10 @@ export const Header: React.FC<HeaderProps> = ({
 
 				{/* Right side */}
 				<div className="flex items-center gap-4">
-					<Button className="gap-2" variant={'outline'}>
-						<User size={14} />
-						Войти
-					</Button>
+					<ProfileButton onClickSignIn={() => signIn('github', {
+						callbackUrl: '/',
+						redirect: true
+					})} />
 					{ hasCart && <CartButton />}
 				</div>
 			</Container>
