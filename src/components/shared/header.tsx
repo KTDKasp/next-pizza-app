@@ -12,6 +12,7 @@ import { Container } from './container';
 import { SearchInput } from './search-input';
 import { CartButton } from './cart-button';
 import { ProfileButton } from './profile-button';
+import { AuthModal } from './modals';
 
 
 interface HeaderProps
@@ -30,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
 	...props
 }) => {
 	const searchParams = useSearchParams();
+	const [openAuthModal, setOpenAuthModal] = React.useState(false);
 
 	// Заменить на нормальную страницу успешной оплаты заказа
 	React.useEffect(() => {
@@ -70,10 +72,8 @@ export const Header: React.FC<HeaderProps> = ({
 
 				{/* Right side */}
 				<div className="flex items-center gap-4">
-					<ProfileButton onClickSignIn={() => signIn('github', {
-						callbackUrl: '/',
-						redirect: true
-					})} />
+					<AuthModal open={openAuthModal} onClose={() => setOpenAuthModal(false)}/>
+					<ProfileButton onClickSignIn={() => setOpenAuthModal(true)} />
 					{ hasCart && <CartButton />}
 				</div>
 			</Container>
