@@ -2,6 +2,7 @@ import React from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui';
 import { signIn } from 'next-auth/react';
+import { LoginForm } from './forms/login-form';
 
 type AuthModalProps = React.HTMLAttributes<HTMLDivElement> & {
 	open: boolean;
@@ -9,6 +10,12 @@ type AuthModalProps = React.HTMLAttributes<HTMLDivElement> & {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, className, ...props}) => {
+	const [type, setType] = React.useState<'login' | 'register'>('login');
+
+	const onSwitchType = () => {
+		setType(prev => prev === 'login' ? 'register' : 'login');
+	}
+
 	const handleClose = () => {
 		onClose();
 	}
@@ -16,7 +23,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, className, 
 	return (
 		<Dialog open={open} onOpenChange={handleClose}>
 			<DialogContent className='w-[450px] bg-white p-10'>
-				FORM
+				{
+					type === 'login' ? <LoginForm onCloseModal={handleClose} /> : <h1>REGISTER</h1>
+				}
 				<hr />
 				<div className="flex gap-2">
 					<Button
@@ -49,6 +58,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ open, onClose, className, 
 						Google
 					</Button>
 				</div>
+
+				<Button variant='outline' onClick={onSwitchType} type='button' className='h-12'>
+					{
+						type !== 'login' ? 'Войти' : 'Зарегистрироваться'
+					}
+				</Button>
 			</DialogContent>
 		</Dialog>
 	)

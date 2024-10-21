@@ -59,7 +59,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onCloseModal }) => {
 						</p>
 					</div>
 					<img
-						src="/images/numbers-icon.png"
+						src="/images/phone-icon.png"
 						alt="phone-icon"
 						width={60}
 						height={60}
