@@ -13,7 +13,6 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({
 	className,
 }) => {
 	const { data: session } = useSession();
-	console.log(session);
 
 	return (
 		<div className={className}>
