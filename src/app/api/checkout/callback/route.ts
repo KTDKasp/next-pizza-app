@@ -1,5 +1,5 @@
 import { PaymentCallbackData } from '@/@types/yookassa';
-import { SuccessOrderTemplate } from '@/components/shared/email-templates/success-order';
+import { SuccessOrderTemplate } from '@/components/shared';
 import { sendEmail } from '@/lib';
 import { prisma } from '@/prisma/prisma-client';
 import { CartItemDTO } from '@/services/dto/cart.dto';

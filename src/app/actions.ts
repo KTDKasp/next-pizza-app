@@ -1,6 +1,6 @@
 'use server';
 
-import { CheckoutFormValues, PayOrderTemplate } from '@/components/shared';
+import { CheckoutFormValues, PayOrderTemplate, VerificationUserTemplate } from '@/components/shared';
 import { createPayment, sendEmail } from '@/lib';
 import { getUserSession } from '@/lib/get-user-session';
 import { prisma } from '@/prisma/prisma-client';
@@ -165,6 +165,20 @@ export async function registerUser(body: Prisma.UserCreateInput) {
       }
     })
 
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await prisma.verificationCode.create({
+      data: {
+        code,
+        userId: createdUser.id,
+      }
+    })
+
+    await sendEmail(
+      createdUser.email,
+      'Next Pizza / Подтверждение регистрации',
+      VerificationUserTemplate({ code })
+    )
   } catch (error) {
     console.log('Error [CREATE USER]', error)
     throw error;

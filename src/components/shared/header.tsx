@@ -4,8 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { useSearchParams } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { Container } from './container';
@@ -30,15 +29,29 @@ export const Header: React.FC<HeaderProps> = ({
 	className,
 	...props
 }) => {
+	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [openAuthModal, setOpenAuthModal] = React.useState(false);
 
 	// Заменить на нормальную страницу успешной оплаты заказа
 	React.useEffect(() => {
+		let toastMessage = '';
+
 		if (searchParams.has('paid')) {
+			toastMessage = 'Заказ успешно оплачен! Информация отправлена на почту.';
+		}
+
+		if (searchParams.has('verified')) {
+			toastMessage = 'Почта успешно подтверждена!';
+		}
+
+		if (toastMessage) {
 			setTimeout(() => {
-				toast.success('Заказ успешно оплачен! Информация отправлена на почту.')
-			}, 500)
+				router.replace('/');
+				toast.success(toastMessage, {
+					duration: 3000,
+				})
+			}, 1000)
 		}
 	}, []);
 
