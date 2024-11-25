@@ -4,9 +4,9 @@ import {
   ProductsCardList,
   Title,
   TopBar,
+  Stories,
 } from '@/components/shared';
 import { findPizzas, GetSearchParams } from '@/lib/find-pizzas';
-import { prisma } from '@/prisma/prisma-client';
 import { Suspense } from 'react';
 
 export default async function Home({ searchParams }: { searchParams: GetSearchParams}) {
@@ -23,6 +23,8 @@ export default async function Home({ searchParams }: { searchParams: GetSearchPa
           (category) => category.products.length > 0
         )}
       />
+
+      <Stories />
 
       <Container className="pb-14">
         <div className="flex gap-12">
