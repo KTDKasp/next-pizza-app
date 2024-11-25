@@ -1,10 +1,4 @@
-import React from 'react'
-
-type Props = {
-	className?: string;
-}
-
-export default function Dashboard({className}: Props) {
+export default function Dashboard() {
 	return (
 		<div>page</div>
 	)
